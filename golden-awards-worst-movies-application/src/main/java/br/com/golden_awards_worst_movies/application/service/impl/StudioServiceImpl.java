@@ -32,21 +32,4 @@ public class StudioServiceImpl implements StudioService {
         allStudios.addAll(newStudios);
         return Set.copyOf(allStudios);
     }
-
-    @Override
-    public List<StudioEntity> getAllStudiosFromMovieId(Long id) {
-        return null;
-    }
-
-    @Override
-    public Map<StudioEntity, List<Long>> getAllStudiosWithMovieIds() {
-        return null;
-    }
-
-    @Override
-    public List<StudioEntity> getAllStudiosOfMovie(MovieEntity movie){
-        return this.getAllStudiosWithMovieIds().entrySet().stream()
-                .filter(producer -> producer.getValue().contains(movie.getId()))
-                .map(Map.Entry::getKey).toList();
-    }
 }

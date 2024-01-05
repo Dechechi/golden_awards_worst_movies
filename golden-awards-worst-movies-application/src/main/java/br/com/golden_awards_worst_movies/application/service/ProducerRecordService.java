@@ -10,8 +10,6 @@ public interface ProducerRecordService {
 
     ProducerRecord saveProducerRecord(ProducerRecord producerRecord);
     ProducerRecord updateProducerRecord(ProducerRecordEntity recordEntity, ProducerRecord producerRecord);
-    ProducerRecord deleteProducerRecord(ProducerRecord producerRecord);
-    ProducerRecord findProducerRecordById(ProducerRecord producerRecord);
     List<ProducerAward> findMaxProducerAwards();
     List<ProducerAward> findMinProducerAwards();
 

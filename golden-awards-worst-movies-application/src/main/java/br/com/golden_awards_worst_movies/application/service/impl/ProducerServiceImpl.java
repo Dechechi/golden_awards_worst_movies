@@ -32,21 +32,4 @@ public class ProducerServiceImpl implements ProducerService {
         allProducers.addAll(newProducers);
         return Set.copyOf(allProducers);
     }
-
-    @Override
-    public List<ProducerEntity> getAllProducersFromMovieId(Long id) {
-        return null;
-    }
-
-    @Override
-    public Map<ProducerEntity, List<Long>> getAllProducersWithMovieIds(){
-        return null;
-    }
-
-    @Override
-    public List<ProducerEntity> getAllProducersOfMovie(MovieEntity movie){
-        return this.getAllProducersWithMovieIds().entrySet().stream()
-                .filter(producer -> producer.getValue().contains(movie.getId()))
-                .map(Map.Entry::getKey).toList();
-    }
 }

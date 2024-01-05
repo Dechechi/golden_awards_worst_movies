@@ -30,11 +30,17 @@ public class MovieBuilder {
     }
 
     public static List<Studio> splitStudios(String studios){
-        return Arrays.stream(studios.split(",")).map(Studio::new).toList();
+        return Arrays.stream(studios.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(Studio::new).toList();
     }
 
     public static List<Producer> splitProducers(String producers){
-        return Arrays.stream(producers.split(",")).map(Producer::new).toList();
+        return Arrays.stream(producers.split("\\s*(,|\\band\\b)"))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(Producer::new).toList();
     }
 
 }

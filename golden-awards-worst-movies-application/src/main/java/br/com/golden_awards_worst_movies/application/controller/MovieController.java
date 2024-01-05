@@ -29,7 +29,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<MovieResponse> create(@RequestBody MovieRequest movieRequest){
+    public ResponseEntity<MovieResponse> create(@RequestBody MovieRequest movieRequest) throws BaseException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(domainToResponseMapper.mapToMovieResponse(movieService.createMovie(

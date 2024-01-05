@@ -5,6 +5,7 @@ import br.com.golden_awards_worst_movies.application.service.ProducerRecordServi
 import br.com.golden_awards_worst_movies.application.service.ProducerService;
 import br.com.golden_awards_worst_movies.application.service.StudioService;
 import br.com.golden_awards_worst_movies.domain.behavior.ProducerRecordBuilder;
+import br.com.golden_awards_worst_movies.domain.exception.MovieAlreadyExistsException;
 import br.com.golden_awards_worst_movies.domain.exception.MovieDontExistException;
 import br.com.golden_awards_worst_movies.domain.model.Movie;
 import br.com.golden_awards_worst_movies.domain.model.Producer;
@@ -13,6 +14,7 @@ import br.com.golden_awards_worst_movies.infrastructure.mapper.DomainToEntityMap
 import br.com.golden_awards_worst_movies.infrastructure.mapper.EntityToDomainMapper;
 import br.com.golden_awards_worst_movies.infrastructure.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,21 +46,32 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie createMovie(Movie movie) {
+    public Movie createMovie(Movie movie) throws MovieAlreadyExistsException {
         MovieEntity movieEntity = domainToEntityMapper.mapMovieDomainToEntity(movie);
         movieEntity.setProducers(producerService.getExistingAndNewProducersAsEntity(movie.producers()));
         movieEntity.setStudios(studioService.getExistingAndNewStudiosAsEntity(movie.studios()));
-        movieRepository.save(movieEntity);
+        try {
+            movieRepository.save(movieEntity);
+        } catch (DataIntegrityViolationException ex){
+            throw new MovieAlreadyExistsException("The movie you are trying to create already exists");
+        }
         checkMovieRecord(movie);
         return movie;
     }
 
     @Override
-    public Movie updateMovie(Movie movie) throws MovieDontExistException {
+    public Movie updateMovie(Movie movie) throws MovieDontExistException, MovieAlreadyExistsException {
         checkMovieRecord(movie);
         getMovieWithProducersAndStudios(movie.id());
 
-        return entityToDomainMapper.mapMovieEntityToDomain(movieRepository.save(domainToEntityMapper.mapMovieDomainToEntity(movie)));
+        MovieEntity movieEntity;
+        try{
+            movieEntity = movieRepository.save(domainToEntityMapper.mapMovieDomainToEntity(movie));
+        } catch (DataIntegrityViolationException ex){
+            throw new MovieAlreadyExistsException("You are trying to update a movie to a title and year that already exists");
+        }
+
+        return entityToDomainMapper.mapMovieEntityToDomain(movieRepository.save(movieEntity));
     }
 
     @Override

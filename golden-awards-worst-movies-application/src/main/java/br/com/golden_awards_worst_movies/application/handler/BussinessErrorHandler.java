@@ -4,7 +4,6 @@ import br.com.golden_awards_worst_movies.domain.dto.ErrorBaseResponse;
 import br.com.golden_awards_worst_movies.domain.enums.ErrorMapping;
 import br.com.golden_awards_worst_movies.domain.exception.BaseException;
 import br.com.golden_awards_worst_movies.domain.exception.UnhandledBaseException;
-import lombok.Getter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -51,16 +51,6 @@ public class ProducerRecordServiceImpl implements ProducerRecordService {
     }
 
     @Override
-    public ProducerRecord deleteProducerRecord(ProducerRecord producerRecord) {
-        return null;
-    }
-
-    @Override
-    public ProducerRecord findProducerRecordById(ProducerRecord producerRecord) {
-        return null;
-    }
-
-    @Override
     public List<ProducerAward> findMaxProducerAwards() {
         List<ProducerRecordEntity> maxRecordEntity = producerRecordRepository.findAllWithMaxInterval();
         return maxRecordEntity.stream().map(record -> entityToDomainMapper.mapAwardEntityRecordToDomain(record)).collect(Collectors.toList());

@@ -3,7 +3,6 @@ package br.com.golden_awards_worst_movies.application.controller;
 import br.com.golden_awards_worst_movies.application.service.ProducerRecordService;
 import br.com.golden_awards_worst_movies.domain.dto.ProducersAwardsResponse;
 import br.com.golden_awards_worst_movies.domain.mapper.DomainToResponseMapper;
-import br.com.golden_awards_worst_movies.domain.model.ProducerAward;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

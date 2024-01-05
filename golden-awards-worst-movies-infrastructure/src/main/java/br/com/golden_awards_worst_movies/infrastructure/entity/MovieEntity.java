@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "Movie")
+@Table(name = "Movie", uniqueConstraints = @UniqueConstraint(columnNames = {"title", "releaseYear"}))
 @Data
 public class MovieEntity implements Serializable {
 
