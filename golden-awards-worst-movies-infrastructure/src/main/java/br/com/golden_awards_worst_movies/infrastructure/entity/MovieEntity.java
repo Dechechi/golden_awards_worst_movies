@@ -20,7 +20,6 @@ public class MovieEntity implements Serializable {
     private int releaseYear;
     @Column(nullable = false, name = "title")
     private String title;
-    @JsonIgnoreProperties("movies")
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(
             name = "studio_movies",
@@ -28,7 +27,6 @@ public class MovieEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "studio_id")
     )
     private Set<StudioEntity> studios;
-    @JsonIgnoreProperties("movies")
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(
             name = "producer_movies",

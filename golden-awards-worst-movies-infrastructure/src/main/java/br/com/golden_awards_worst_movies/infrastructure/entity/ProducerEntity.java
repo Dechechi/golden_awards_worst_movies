@@ -19,9 +19,6 @@ public class ProducerEntity implements Serializable {
     @Id
     private String name;
 
-//    @OneToOne
-//    private ProducerRecordEntity producerRecord;
-
     public ProducerEntity(String name) {
         this.name = name;
     }
