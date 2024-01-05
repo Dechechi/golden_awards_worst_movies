@@ -2,9 +2,11 @@ package br.com.golden_awards_worst_movies.infrastructure.mapper;
 
 import br.com.golden_awards_worst_movies.domain.model.Movie;
 import br.com.golden_awards_worst_movies.domain.model.Producer;
+import br.com.golden_awards_worst_movies.domain.model.ProducerRecord;
 import br.com.golden_awards_worst_movies.domain.model.Studio;
 import br.com.golden_awards_worst_movies.infrastructure.entity.MovieEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
+import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerRecordEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.StudioEntity;
 
 import java.util.List;
@@ -31,6 +33,11 @@ public class EntityToDomainMapper {
 
     public Producer mapProducerEntityToDomain(ProducerEntity producer){
         return new Producer(producer.getName());
+    }
+
+    public ProducerRecord mapRecordEntityToDomain(ProducerRecordEntity producerRecordEntity){
+        return new ProducerRecord(mapProducerEntityToDomain(producerRecordEntity.getProducer()),
+                producerRecordEntity.getFollowingWin());
     }
 
 }

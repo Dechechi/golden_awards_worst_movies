@@ -2,9 +2,11 @@ package br.com.golden_awards_worst_movies.infrastructure.mapper;
 
 import br.com.golden_awards_worst_movies.domain.model.Movie;
 import br.com.golden_awards_worst_movies.domain.model.Producer;
+import br.com.golden_awards_worst_movies.domain.model.ProducerRecord;
 import br.com.golden_awards_worst_movies.domain.model.Studio;
 import br.com.golden_awards_worst_movies.infrastructure.entity.MovieEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
+import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerRecordEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.StudioEntity;
 
 import java.util.stream.Collectors;
@@ -32,6 +34,31 @@ public class DomainToEntityMapper {
         ProducerEntity producerEntity = new ProducerEntity();
         producerEntity.setName(producer.name());
         return producerEntity;
+    }
+
+    public ProducerRecordEntity mapRecordDomainToEntity(ProducerRecord producerRecord){
+        ProducerRecordEntity producerRecordEntity = new ProducerRecordEntity();
+        return calculateRecord(producerRecordEntity, producerRecord);
+    }
+
+    public ProducerRecordEntity calculateRecord(ProducerRecordEntity producerRecordEntity, ProducerRecord producerRecord) {
+        producerRecordEntity.setProducer(this.mapProducerDomainToEntity(producerRecord.producer()));
+        int previousWin = producerRecordEntity.getPreviousWin();
+        int followingWin = producerRecordEntity.getFollowingWin();
+        int yearOfWin = producerRecord.yearOfWin();
+
+        if(previousWin == 0) {
+            producerRecordEntity.setFollowingWin(yearOfWin);
+            producerRecordEntity.setPreviousWin(yearOfWin);
+        }else if (yearOfWin > previousWin && yearOfWin < followingWin) {
+            producerRecordEntity.setPreviousWin(yearOfWin);
+        } else if (yearOfWin > previousWin && yearOfWin > followingWin) {
+            producerRecordEntity.setFollowingWin(yearOfWin);
+            producerRecordEntity.setPreviousWin(followingWin);
+        }
+        if (producerRecordEntity.getFollowingWin() != 0)
+            producerRecordEntity.setIntervalTime(producerRecordEntity.getFollowingWin() - producerRecordEntity.getPreviousWin());
+        return producerRecordEntity;
     }
 
 }

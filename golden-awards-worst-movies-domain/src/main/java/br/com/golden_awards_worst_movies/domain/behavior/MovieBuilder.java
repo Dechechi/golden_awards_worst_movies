@@ -13,19 +13,28 @@ import java.util.List;
 public class MovieBuilder {
 
     public static Movie createMovieFromRequest(MovieRequest movieRequest){
-        int year = Integer.parseInt(movieRequest.getYear());
-        List<Studio> studios = Arrays.stream(movieRequest.getStudios().split(",")).map(Studio::new).toList();
-        List<Producer> producers = Arrays.stream(movieRequest.getProducers().split(",")).map(Producer::new).toList();
-        boolean winner = Boolean.parseBoolean(movieRequest.getWinner());
-        return new Movie(year, movieRequest.getTitle(), studios, producers, winner);
+        return new Movie(Integer.parseInt(movieRequest.getYear()),
+                movieRequest.getTitle(),
+                splitStudios(movieRequest.getStudios()),
+                splitProducers(movieRequest.getProducers()),
+                Boolean.parseBoolean(movieRequest.getWinner()));
     }
 
     public static Movie createMovieFromRequestWithId(MovieRequest movieRequest, Long id){
-        int year = Integer.parseInt(movieRequest.getYear());
-        List<Studio> studios = Arrays.stream(movieRequest.getStudios().split(",")).map(Studio::new).toList();
-        List<Producer> producers = Arrays.stream(movieRequest.getProducers().split(",")).map(Producer::new).toList();
-        boolean winner = Boolean.parseBoolean(movieRequest.getWinner());
-        return new Movie(id, year, movieRequest.getTitle(), studios, producers, winner);
+        return new Movie(id,
+                Integer.parseInt(movieRequest.getYear()),
+                movieRequest.getTitle(),
+                splitStudios(movieRequest.getStudios()),
+                splitProducers(movieRequest.getProducers()),
+                Boolean.parseBoolean(movieRequest.getWinner()));
+    }
+
+    public static List<Studio> splitStudios(String studios){
+        return Arrays.stream(studios.split(",")).map(Studio::new).toList();
+    }
+
+    public static List<Producer> splitProducers(String producers){
+        return Arrays.stream(producers.split(",")).map(Producer::new).toList();
     }
 
 }

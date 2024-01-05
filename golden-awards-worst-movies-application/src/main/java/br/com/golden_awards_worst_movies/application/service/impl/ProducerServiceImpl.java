@@ -5,7 +5,6 @@ import br.com.golden_awards_worst_movies.domain.model.Producer;
 import br.com.golden_awards_worst_movies.infrastructure.entity.MovieEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
 import br.com.golden_awards_worst_movies.infrastructure.repository.ProducerRepository;
-import br.com.golden_awards_worst_movies.infrastructure.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +15,6 @@ import java.util.stream.Collectors;
 public class ProducerServiceImpl implements ProducerService {
 
     ProducerRepository producerRepository;
-
-    private Map<ProducerEntity, List<Long>> producersMoviesMap = new HashMap<>();
 
     @Autowired
     public ProducerServiceImpl(ProducerRepository producerRepository) {
@@ -43,14 +40,6 @@ public class ProducerServiceImpl implements ProducerService {
 
     @Override
     public Map<ProducerEntity, List<Long>> getAllProducersWithMovieIds(){
-//        List<Object[]> results = producerRepository.findAllProducersWithMovieIds();
-//        for (Object[] result: results) {
-//            ProducerEntity producerEntity = new ProducerEntity(result[0].toString());
-//            Long movieId = (Long) result[1];
-//
-//            producersMoviesMap.computeIfAbsent(producerEntity, k -> new ArrayList<>()).add(movieId);
-//        }
-//        return producersMoviesMap;
         return null;
     }
 
