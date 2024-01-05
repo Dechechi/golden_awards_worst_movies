@@ -12,9 +12,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProducersRankingRequest {
+public class ProducersAwardsResponse {
 
-    private List<ProducerRecord> min;
-    private List<ProducerRecord> max;
+    private List<RecordResponse> min;
+    private List<RecordResponse> max;
 
 }

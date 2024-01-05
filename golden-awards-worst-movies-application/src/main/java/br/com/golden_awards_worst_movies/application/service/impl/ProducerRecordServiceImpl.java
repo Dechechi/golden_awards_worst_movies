@@ -1,6 +1,7 @@
 package br.com.golden_awards_worst_movies.application.service.impl;
 
 import br.com.golden_awards_worst_movies.application.service.ProducerRecordService;
+import br.com.golden_awards_worst_movies.domain.model.ProducerAward;
 import br.com.golden_awards_worst_movies.domain.model.ProducerRecord;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerRecordEntity;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.DomainToEntityMapper;
@@ -8,7 +9,9 @@ import br.com.golden_awards_worst_movies.infrastructure.mapper.EntityToDomainMap
 import br.com.golden_awards_worst_movies.infrastructure.repository.ProducerRecordRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProducerRecordServiceImpl implements ProducerRecordService {
@@ -55,5 +58,17 @@ public class ProducerRecordServiceImpl implements ProducerRecordService {
     @Override
     public ProducerRecord findProducerRecordById(ProducerRecord producerRecord) {
         return null;
+    }
+
+    @Override
+    public List<ProducerAward> findMaxProducerAwards() {
+        List<ProducerRecordEntity> maxRecordEntity = producerRecordRepository.findAllWithMaxInterval();
+        return maxRecordEntity.stream().map(record -> entityToDomainMapper.mapAwardEntityRecordToDomain(record)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProducerAward> findMinProducerAwards() {
+        List<ProducerRecordEntity> maxRecordEntity = producerRecordRepository.findAllWithMinInterval();
+        return maxRecordEntity.stream().map(record -> entityToDomainMapper.mapAwardEntityRecordToDomain(record)).collect(Collectors.toList());
     }
 }
