@@ -13,7 +13,7 @@ public interface ProducerRecordRepository extends JpaRepository<ProducerRecordEn
     Optional<ProducerRecordEntity> findByProducer(ProducerEntity producer);
     @Query("SELECT r FROM ProducerRecordEntity r WHERE r.intervalTime = (SELECT MAX(r2.intervalTime) FROM ProducerRecordEntity r2)")
     List<ProducerRecordEntity> findAllWithMaxInterval();
-    @Query("SELECT r FROM ProducerRecordEntity r WHERE r.intervalTime = (SELECT MIN(r2.intervalTime) FROM ProducerRecordEntity r2) AND r.intervalTime <> 0")
+    @Query("SELECT r FROM ProducerRecordEntity r WHERE r.intervalTime = (SELECT MIN(r2.intervalTime) FROM ProducerRecordEntity r2 WHERE r2.intervalTime <> 0)")
     List<ProducerRecordEntity> findAllWithMinInterval();
 
 }

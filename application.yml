@@ -7,3 +7,7 @@ spring:
   h2:
     console.enabled: true
     console.path: /h2-console
+
+reader:
+  csv:
+    path: "movielist (2).csv"

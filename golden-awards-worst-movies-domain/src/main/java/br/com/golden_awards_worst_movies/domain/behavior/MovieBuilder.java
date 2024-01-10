@@ -1,5 +1,7 @@
 package br.com.golden_awards_worst_movies.domain.behavior;
 
+import br.com.golden_awards_worst_movies.domain.enums.WinnerBoolean;
+import br.com.golden_awards_worst_movies.domain.exception.InvalidWinnerOptionException;
 import br.com.golden_awards_worst_movies.domain.model.Movie;
 import br.com.golden_awards_worst_movies.domain.model.Producer;
 import br.com.golden_awards_worst_movies.domain.model.Studio;
@@ -12,21 +14,21 @@ import java.util.List;
 @AllArgsConstructor
 public class MovieBuilder {
 
-    public static Movie createMovieFromRequest(MovieRequest movieRequest){
+    public static Movie createMovieFromRequest(MovieRequest movieRequest) throws InvalidWinnerOptionException {
         return new Movie(Integer.parseInt(movieRequest.getYear()),
                 movieRequest.getTitle(),
                 splitStudios(movieRequest.getStudios()),
                 splitProducers(movieRequest.getProducers()),
-                Boolean.parseBoolean(movieRequest.getWinner()));
+                WinnerBoolean.valueFrom(movieRequest.getWinner()));
     }
 
-    public static Movie createMovieFromRequestWithId(MovieRequest movieRequest, Long id){
+    public static Movie createMovieFromRequestWithId(MovieRequest movieRequest, Long id) throws InvalidWinnerOptionException {
         return new Movie(id,
                 Integer.parseInt(movieRequest.getYear()),
                 movieRequest.getTitle(),
                 splitStudios(movieRequest.getStudios()),
                 splitProducers(movieRequest.getProducers()),
-                Boolean.parseBoolean(movieRequest.getWinner()));
+                WinnerBoolean.valueFrom(movieRequest.getWinner()));
     }
 
     public static List<Studio> splitStudios(String studios){
