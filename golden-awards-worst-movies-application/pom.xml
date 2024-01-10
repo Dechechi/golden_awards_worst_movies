@@ -53,6 +53,16 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**</include>
+                    <!-- Include other file extensions if needed -->
+                </includes>
+            </resource>
+            <!-- Include additional resource directories if needed -->
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

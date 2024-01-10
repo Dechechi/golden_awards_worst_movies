@@ -16,14 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.*;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class PipelineDataReaderImpl implements PipelineDataReader {
@@ -41,29 +35,51 @@ public class PipelineDataReaderImpl implements PipelineDataReader {
 
     @Override
     public void readMoviesFromCsv() {
-        try {
-            URL resourceURL = Objects.requireNonNull(getClass().getClassLoader().getResource(csvReaderConfig.getPath()));
-            URI uri = resourceURL.toURI();
-            File file = new File(uri);
-            CSVReader csvReader = new CSVReaderBuilder
-                    (new FileReader(file)).withCSVParser(
-                            new CSVParserBuilder().withSeparator(';').build()).withSkipLines(1)
-                    .build();
+        try (InputStream inputStream = getClass().getResourceAsStream(csvReaderConfig.getPath())) {
+            if (inputStream != null) {
+                try {
+                    File file = streamToFile(inputStream);
+                    CSVReader csvReader = new CSVReaderBuilder
+                            (new FileReader(file)).withCSVParser(
+                                    new CSVParserBuilder().withSeparator(';').build()).withSkipLines(1)
+                            .build();
 
-            List<String[]> lines = csvReader.readAll();
+                    List<String[]> lines = csvReader.readAll();
 
-            for (String[] line : lines) {
-                MovieRequest movieRequest = new MovieRequest();
-                movieRequest.setYear(line[0]);
-                movieRequest.setTitle(line[1]);
-                movieRequest.setStudios(line[2]);
-                movieRequest.setProducers(line[3]);
-                movieRequest.setWinner(line[4]);
-                movieService.createMovie(MovieBuilder.createMovieFromRequest(movieRequest));
+                    for (String[] line : lines) {
+                        MovieRequest movieRequest = new MovieRequest();
+                        movieRequest.setYear(line[0]);
+                        movieRequest.setTitle(line[1]);
+                        movieRequest.setStudios(line[2]);
+                        movieRequest.setProducers(line[3]);
+                        movieRequest.setWinner(line[4]);
+                        movieService.createMovie(MovieBuilder.createMovieFromRequest(movieRequest));
+                    }
+                }  catch (IOException | CsvException | MovieAlreadyExistsException | InvalidWinnerOptionException e) {
+                    LOG.error(e.getMessage());
+                    throw new RuntimeException();
+                }
+            } else {
+                LOG.error("Resource not found");
             }
-        } catch (IOException | CsvException | MovieAlreadyExistsException | InvalidWinnerOptionException | URISyntaxException e) {
-            LOG.error(e.getMessage());
-            throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        LOG.info("FULLY REGISTERED CSV MOVIES");
+    }
+
+    private static File streamToFile(InputStream inputStream) throws IOException {
+        File tempFile = File.createTempFile("movies.csv", ".tmp");
+        tempFile.deleteOnExit();
+
+        try (FileOutputStream out = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+        }
+
+        return tempFile;
     }
 }

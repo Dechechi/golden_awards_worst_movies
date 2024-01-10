@@ -20,8 +20,8 @@ public class CsvController {
     }
 
     @GetMapping
-    public ResponseEntity<String> socorro(){
+    public ResponseEntity<String> executeTask(){
         pipelineDataReader.readMoviesFromCsv();
-        return ResponseEntity.status(HttpStatus.OK).body("FOOOOOI?");
+        return ResponseEntity.status(HttpStatus.OK).body("CHAMADA REALIZADA");
     }
 }

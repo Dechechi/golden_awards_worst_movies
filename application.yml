@@ -10,4 +10,4 @@ spring:
 
 reader:
   csv:
-    path: "movielist (2).csv"
+    path: "/movielist (2).csv"

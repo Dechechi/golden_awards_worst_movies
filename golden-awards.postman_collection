@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "ace4f12d-4c38-4857-9f34-5535e92cab8c",
+		"name": "Texo Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Movie 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"year\": 1990,\r\n    \"title\": \"filme da Aninha\",\r\n    \"producers\": \"Aninha\",\r\n    \"studios\": \"Aninha Studios\",\r\n    \"winner\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/movie",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"movie"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Movie 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"year\": 1990,\r\n    \"title\": \"filme do Gu\",\r\n    \"producers\": \"Aninha,Gustavo\",\r\n    \"studios\": \"Aninha Studios,Gus Studios\",\r\n    \"winner\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/movie",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"movie"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movie All Movies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/movie",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"movie"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movie By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/movie/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"movie",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Movie",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/movie/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"movie",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Movie",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"year\": 2010,\r\n    \"title\": \"filme da Aninha\",\r\n    \"producers\": \"Aninha\",\r\n    \"studios\": \"Aninha Studios\",\r\n    \"winner\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/movie/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"movie",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Award",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/awards",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"awards"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
