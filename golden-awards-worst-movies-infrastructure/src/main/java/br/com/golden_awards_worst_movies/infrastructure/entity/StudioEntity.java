@@ -17,6 +17,8 @@ public class StudioEntity implements Serializable {
     private static final long serialVersionUID = 2186836468432369509L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
 
     public StudioEntity(String name) {

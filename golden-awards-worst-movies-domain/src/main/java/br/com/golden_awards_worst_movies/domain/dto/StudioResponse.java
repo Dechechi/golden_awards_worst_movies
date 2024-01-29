@@ -6,20 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MovieResponse {
+public class StudioResponse {
 
-    private Long id;
-    private int year;
-    private String title;
-    private List<StudioResponse> studios;
-    private List<ProducerResponse> producers;
-    private boolean winner;
+    private String name;
 
 }

@@ -26,9 +26,6 @@ public class ProducerEntity implements Serializable {
     @ManyToMany(mappedBy = "producers")
     private Set<MovieEntity> movies;
 
-    @OneToMany
-    private Set<ProducerRecordEntity> producerRecords;
-
     public ProducerEntity(String name) {
         this.name = name;
     }

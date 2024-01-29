@@ -32,12 +32,10 @@ public class ProducerServiceImpl implements ProducerService {
 
     @Override
     public Set<ProducerEntity> getExistingAndNewProducersAsEntity(List<Producer> producers) {
-        //List<String> receivedProducers = producers.stream().map(Producer::name).toList();
-        List<ProducerEntity> existingProducers = producerRepository.findByNameIn(producers.stream().map(Producer::name).collect(Collectors.toList()));
-        //List<String> existingProducersList = existingProducers.stream().map(ProducerEntity::getName).toList();
+        List<ProducerEntity> existingProducers = producerRepository.findByNameIn(producers.stream().map(Producer::getName).collect(Collectors.toList()));
         List<Producer> newProducersNames = producers.stream()
                 .filter(producer -> existingProducers.stream().noneMatch(
-                        producerEntity -> producerEntity.getName().equalsIgnoreCase(producer.name()))).toList();
+                        producerEntity -> producerEntity.getName().equalsIgnoreCase(producer.getName()))).toList();
         List<ProducerEntity> newProducers = newProducersNames.stream().map(
                 producer -> producerRepository.save(domainToEntityMapper.mapProducerDomainToEntity(producer))).toList();
         List<ProducerEntity> allProducers = new ArrayList<>(existingProducers);
@@ -59,12 +57,12 @@ public class ProducerServiceImpl implements ProducerService {
     }
 
     public void updateRecordInterval(Producer producer){
-        if (producer.awardYears().size() > 1){
+        if (producer.getAwardYears().size() > 1){
             producerRecordService.deleteAllByProducer(domainToEntityMapper.mapProducerDomainToEntity(producer));
-            producer.awardYears().sort(Comparator.naturalOrder());
-            for (int i = 0; i < producer.awardYears().size() - 1;i++){
-                int currentYear = producer.awardYears().get(i);
-                int nextYear = producer.awardYears().get(i+1);
+            producer.getAwardYears().sort(Comparator.naturalOrder());
+            for (int i = 0; i < producer.getAwardYears().size() - 1;i++){
+                int currentYear = producer.getAwardYears().get(i);
+                int nextYear = producer.getAwardYears().get(i+1);
                 int interval = Math.abs(currentYear - nextYear);
                 producerRecordService.saveProducerRecord(ProducerAwardBuilder.createAward(producer, interval, currentYear, nextYear));
             }

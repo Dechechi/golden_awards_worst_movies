@@ -12,26 +12,26 @@ public class DomainToEntityMapper {
 
     public MovieEntity mapMovieDomainToEntity(Movie movie){
         MovieEntity movieEntity = new MovieEntity();
-        if (movie.id() != null) movieEntity.setId(movie.id());
-        movieEntity.setReleaseYear(movie.year());
-        movieEntity.setTitle(movie.title());
-        movieEntity.setProducers(movie.producers().stream().map(this::mapProducerDomainToEntity).collect(Collectors.toSet()));
-        movieEntity.setStudios(movie.studios().stream().map(this::mapStudioDomainToEntity).collect(Collectors.toSet()));
-        movieEntity.setWinner(movie.winner());
+        if (movie.getId() != null) movieEntity.setId(movie.getId());
+        movieEntity.setReleaseYear(movie.getYear());
+        movieEntity.setTitle(movie.getTitle());
+        movieEntity.setProducers(movie.getProducers().stream().map(this::mapProducerDomainToEntity).collect(Collectors.toSet()));
+        movieEntity.setStudios(movie.getStudios().stream().map(this::mapStudioDomainToEntity).collect(Collectors.toSet()));
+        movieEntity.setWinner(movie.isWinner());
         return movieEntity;
     }
 
     public StudioEntity mapStudioDomainToEntity(Studio studio){
         StudioEntity studioEntity = new StudioEntity();
-        studioEntity.setName(studio.name());
+        studioEntity.setName(studio.getName());
         return studioEntity;
     }
 
     public ProducerEntity mapProducerDomainToEntity(Producer producer){
         ProducerEntity producerEntity = new ProducerEntity();
-        producerEntity.setId(producer.id());
-        producerEntity.setName(producer.name());
-        producerEntity.setAwardYears(producer.awardYears().stream()
+        producerEntity.setId(producer.getId());
+        producerEntity.setName(producer.getName());
+        producerEntity.setAwardYears(producer.getAwardYears().stream()
                 .map(Object::toString)
                 .collect(Collectors.joining(";")));
         return producerEntity;
@@ -39,10 +39,10 @@ public class DomainToEntityMapper {
 
     public ProducerRecordEntity mapAwardDomainToEntity(ProducerAward producerAward){
         ProducerRecordEntity producerRecordEntity = new ProducerRecordEntity();
-        producerRecordEntity.setProducer(mapProducerDomainToEntity(producerAward.producer()));
-        producerRecordEntity.setIntervalTime(producerAward.interval());
-        producerRecordEntity.setPreviousWin(producerAward.previousWin());
-        producerRecordEntity.setFollowingWin(producerAward.followingWin());
+        producerRecordEntity.setProducer(mapProducerDomainToEntity(producerAward.getProducer()));
+        producerRecordEntity.setIntervalTime(producerAward.getInterval());
+        producerRecordEntity.setPreviousWin(producerAward.getPreviousWin());
+        producerRecordEntity.setFollowingWin(producerAward.getFollowingWin());
         return producerRecordEntity;
     }
 

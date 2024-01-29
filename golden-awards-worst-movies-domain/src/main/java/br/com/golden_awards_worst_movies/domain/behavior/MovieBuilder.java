@@ -47,7 +47,7 @@ public class MovieBuilder {
         return Arrays.stream(producers.split("\\s*(,|\\band\\b)"))
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
-                .map(s -> new Producer(null, s, years)).toList();
+                .map(s -> new Producer(s, years)).toList();
     }
 
 }

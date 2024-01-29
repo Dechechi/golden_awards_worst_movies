@@ -47,11 +47,8 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie createMovie(Movie movie) throws MovieAlreadyExistsException {
         MovieEntity movieEntity = domainToEntityMapper.mapMovieDomainToEntity(movie);
-        movieEntity.setProducers(producerService.getExistingAndNewProducersAsEntity(movie.producers()));
-//        if(movie.winner()){
-//            movieEntity.setProducers(producerService.checkAwards(movieEntity.getProducers(), movieEntity.getReleaseYear()));
-//        }
-        movieEntity.setStudios(studioService.getExistingAndNewStudiosAsEntity(movie.studios()));
+        movieEntity.setProducers(producerService.getExistingAndNewProducersAsEntity(movie.getProducers()));
+        movieEntity.setStudios(studioService.getExistingAndNewStudiosAsEntity(movie.getStudios()));
         try {
             movieRepository.save(movieEntity);
         } catch (DataIntegrityViolationException ex){
@@ -63,13 +60,14 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie updateMovie(Movie movie) throws MovieDontExistException, MovieAlreadyExistsException {
-        getMovieWithProducersAndStudios(movie.id());
+        getMovieWithProducersAndStudios(movie.getId());
 
         MovieEntity movieEntity;
         try{
             movieEntity = movieRepository.save(domainToEntityMapper.mapMovieDomainToEntity(movie));
         } catch (DataIntegrityViolationException ex){
-            throw new MovieAlreadyExistsException("You are trying to update a movie to a title and year that already exists");
+            throw new MovieAlreadyExistsException
+                    ("You are trying to update a movie to a title and year that already exists");
         }
         Movie updateMovie = entityToDomainMapper.mapMovieEntityToDomain(movieRepository.save(movieEntity));
         checkMovieRecord(movieEntity);
@@ -109,7 +107,6 @@ public class MovieServiceImpl implements MovieService {
         if (movie.isWinner()){
             for (ProducerEntity producer : movie.getProducers()) {
                 producerService.addAwardToProducer(producer, movie.getReleaseYear());
-//                producerRecordService.saveProducerRecord(ProducerRecordBuilder.createRecord(entityToDomainMapper.mapProducerEntityToDomain(producer), movie.getReleaseYear()));
             }
         }
     }

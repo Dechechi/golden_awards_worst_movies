@@ -31,7 +31,8 @@ public class ProducerRecordServiceImpl implements ProducerRecordService {
 
     @Override
     public ProducerAward saveProducerRecord(ProducerAward producerAward) {
-        Optional<ProducerRecordEntity> recordEntity = producerRecordRepository.findByFollowingWinAndPreviousWin(producerAward.followingWin(), producerAward.previousWin());
+        Optional<ProducerRecordEntity> recordEntity = producerRecordRepository.findByFollowingWinAndPreviousWin(
+                producerAward.getFollowingWin(), producerAward.getPreviousWin());
 
         if(recordEntity.isPresent()){
             return entityToDomainMapper.mapAwardEntityRecordToDomain(recordEntity.get());
@@ -42,23 +43,18 @@ public class ProducerRecordServiceImpl implements ProducerRecordService {
         );
     }
 
-//    @Override
-//    public ProducerRecord updateProducerRecord(ProducerRecordEntity recordEntity, ProducerRecord producerRecord) {
-//        return entityToDomainMapper.mapRecordEntityToDomain(
-//                producerRecordRepository.save(domainToEntityMapper.calculateRecord(recordEntity, producerRecord))
-//        );
-//    }
-
     @Override
     public List<ProducerAward> findMaxProducerAwards() {
         List<ProducerRecordEntity> maxRecordEntity = producerRecordRepository.findAllWithMaxInterval();
-        return maxRecordEntity.stream().map(record -> entityToDomainMapper.mapAwardEntityRecordToDomain(record)).collect(Collectors.toList());
+        return maxRecordEntity.stream().map(
+                record -> entityToDomainMapper.mapAwardEntityRecordToDomain(record)).collect(Collectors.toList());
     }
 
     @Override
     public List<ProducerAward> findMinProducerAwards() {
         List<ProducerRecordEntity> maxRecordEntity = producerRecordRepository.findAllWithMinInterval();
-        return maxRecordEntity.stream().map(record -> entityToDomainMapper.mapAwardEntityRecordToDomain(record)).collect(Collectors.toList());
+        return maxRecordEntity.stream().map(
+                record -> entityToDomainMapper.mapAwardEntityRecordToDomain(record)).collect(Collectors.toList());
     }
     @Override
     @Transactional

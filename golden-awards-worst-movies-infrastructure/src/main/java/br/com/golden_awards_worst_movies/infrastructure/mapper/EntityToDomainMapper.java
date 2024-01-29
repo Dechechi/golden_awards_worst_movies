@@ -36,11 +36,6 @@ public class EntityToDomainMapper {
                 .collect(Collectors.toList()));
     }
 
-    public ProducerRecord mapRecordEntityToDomain(ProducerRecordEntity producerRecordEntity){
-        return new ProducerRecord(mapProducerEntityToDomain(producerRecordEntity.getProducer()),
-                producerRecordEntity.getFollowingWin());
-    }
-
     public ProducerAward mapAwardEntityRecordToDomain(ProducerRecordEntity producerRecordEntity){
         return new ProducerAward(mapProducerEntityToDomain(producerRecordEntity.getProducer()),
                 producerRecordEntity.getIntervalTime(),

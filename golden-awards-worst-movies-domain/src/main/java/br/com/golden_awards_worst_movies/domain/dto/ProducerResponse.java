@@ -13,13 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MovieResponse {
+public class ProducerResponse {
 
-    private Long id;
-    private int year;
-    private String title;
-    private List<StudioResponse> studios;
-    private List<ProducerResponse> producers;
-    private boolean winner;
+    private String name;
+    private List<Integer> awardYears;
 
 }

@@ -19,7 +19,7 @@ public class MovieEntity implements Serializable {
     private int releaseYear;
     @Column(nullable = false, name = "title")
     private String title;
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(
             name = "studio_movies",
             joinColumns = @JoinColumn(name = "movie_id"),
