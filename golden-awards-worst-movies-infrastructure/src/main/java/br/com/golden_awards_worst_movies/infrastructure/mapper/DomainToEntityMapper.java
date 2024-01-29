@@ -1,9 +1,6 @@
 package br.com.golden_awards_worst_movies.infrastructure.mapper;
 
-import br.com.golden_awards_worst_movies.domain.model.Movie;
-import br.com.golden_awards_worst_movies.domain.model.Producer;
-import br.com.golden_awards_worst_movies.domain.model.ProducerRecord;
-import br.com.golden_awards_worst_movies.domain.model.Studio;
+import br.com.golden_awards_worst_movies.domain.model.*;
 import br.com.golden_awards_worst_movies.infrastructure.entity.MovieEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerRecordEntity;
@@ -32,32 +29,20 @@ public class DomainToEntityMapper {
 
     public ProducerEntity mapProducerDomainToEntity(Producer producer){
         ProducerEntity producerEntity = new ProducerEntity();
+        producerEntity.setId(producer.id());
         producerEntity.setName(producer.name());
+        producerEntity.setAwardYears(producer.awardYears().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(";")));
         return producerEntity;
     }
 
-    public ProducerRecordEntity mapRecordDomainToEntity(ProducerRecord producerRecord){
+    public ProducerRecordEntity mapAwardDomainToEntity(ProducerAward producerAward){
         ProducerRecordEntity producerRecordEntity = new ProducerRecordEntity();
-        return calculateRecord(producerRecordEntity, producerRecord);
-    }
-
-    public ProducerRecordEntity calculateRecord(ProducerRecordEntity producerRecordEntity, ProducerRecord producerRecord) {
-        producerRecordEntity.setProducer(this.mapProducerDomainToEntity(producerRecord.producer()));
-        int previousWin = producerRecordEntity.getPreviousWin();
-        int followingWin = producerRecordEntity.getFollowingWin();
-        int yearOfWin = producerRecord.yearOfWin();
-
-        if(previousWin == 0) {
-            producerRecordEntity.setFollowingWin(yearOfWin);
-            producerRecordEntity.setPreviousWin(yearOfWin);
-        }else if (yearOfWin > previousWin && yearOfWin < followingWin) {
-            producerRecordEntity.setPreviousWin(yearOfWin);
-        } else if (yearOfWin > previousWin && yearOfWin > followingWin) {
-            producerRecordEntity.setFollowingWin(yearOfWin);
-            producerRecordEntity.setPreviousWin(followingWin);
-        }
-        if (producerRecordEntity.getFollowingWin() != 0)
-            producerRecordEntity.setIntervalTime(producerRecordEntity.getFollowingWin() - producerRecordEntity.getPreviousWin());
+        producerRecordEntity.setProducer(mapProducerDomainToEntity(producerAward.producer()));
+        producerRecordEntity.setIntervalTime(producerAward.interval());
+        producerRecordEntity.setPreviousWin(producerAward.previousWin());
+        producerRecordEntity.setFollowingWin(producerAward.followingWin());
         return producerRecordEntity;
     }
 

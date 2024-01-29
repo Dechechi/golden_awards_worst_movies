@@ -32,7 +32,7 @@ public class DomainToResponseMapper {
     public List<RecordResponse> mapToRecordResponse(List<ProducerAward> producerAward){
         return producerAward.stream().map(award -> {
             RecordResponse recordResponse = new RecordResponse();
-            recordResponse.setProducer(award.producer());
+            recordResponse.setProducer(award.producer().name());
             recordResponse.setInterval(award.interval());
             recordResponse.setPreviousWin(award.previousWin());
             recordResponse.setFollowingWin(award.followingWin());

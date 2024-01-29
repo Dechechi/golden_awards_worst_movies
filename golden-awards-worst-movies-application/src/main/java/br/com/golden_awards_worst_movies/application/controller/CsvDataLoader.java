@@ -26,7 +26,6 @@ public class CsvDataLoader {
     public void executeOnSchedule() {
         String hostname = environment.getProperty("server.host", "localhost");
         int port = environment.getProperty("server.port", Integer.class, 8080);
-        LOG.info("to aqui");
         LOG.info("host: " + hostname + " port: " + port);
 
         String url = "http://" + hostname + ":" + port + "/api/v1/csvReader";

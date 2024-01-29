@@ -1,4 +1,6 @@
 package br.com.golden_awards_worst_movies.domain.model;
 
-public record Producer(String name) {
+import java.util.List;
+
+public record Producer(Long id, String name, List<Integer> awardYears) {
 }

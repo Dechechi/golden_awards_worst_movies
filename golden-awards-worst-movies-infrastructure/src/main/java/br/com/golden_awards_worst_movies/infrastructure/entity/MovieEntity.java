@@ -1,6 +1,5 @@
 package br.com.golden_awards_worst_movies.infrastructure.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,7 +26,7 @@ public class MovieEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "studio_id")
     )
     private Set<StudioEntity> studios;
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(
             name = "producer_movies",
             joinColumns = @JoinColumn(name = "movie_id"),

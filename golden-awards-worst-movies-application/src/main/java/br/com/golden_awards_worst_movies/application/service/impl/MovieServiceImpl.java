@@ -4,12 +4,11 @@ import br.com.golden_awards_worst_movies.application.service.MovieService;
 import br.com.golden_awards_worst_movies.application.service.ProducerRecordService;
 import br.com.golden_awards_worst_movies.application.service.ProducerService;
 import br.com.golden_awards_worst_movies.application.service.StudioService;
-import br.com.golden_awards_worst_movies.domain.behavior.ProducerRecordBuilder;
 import br.com.golden_awards_worst_movies.domain.exception.MovieAlreadyExistsException;
 import br.com.golden_awards_worst_movies.domain.exception.MovieDontExistException;
 import br.com.golden_awards_worst_movies.domain.model.Movie;
-import br.com.golden_awards_worst_movies.domain.model.Producer;
 import br.com.golden_awards_worst_movies.infrastructure.entity.MovieEntity;
+import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.DomainToEntityMapper;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.EntityToDomainMapper;
 import br.com.golden_awards_worst_movies.infrastructure.repository.MovieRepository;
@@ -49,19 +48,21 @@ public class MovieServiceImpl implements MovieService {
     public Movie createMovie(Movie movie) throws MovieAlreadyExistsException {
         MovieEntity movieEntity = domainToEntityMapper.mapMovieDomainToEntity(movie);
         movieEntity.setProducers(producerService.getExistingAndNewProducersAsEntity(movie.producers()));
+//        if(movie.winner()){
+//            movieEntity.setProducers(producerService.checkAwards(movieEntity.getProducers(), movieEntity.getReleaseYear()));
+//        }
         movieEntity.setStudios(studioService.getExistingAndNewStudiosAsEntity(movie.studios()));
         try {
             movieRepository.save(movieEntity);
         } catch (DataIntegrityViolationException ex){
             throw new MovieAlreadyExistsException("The movie you are trying to create already exists");
         }
-        checkMovieRecord(movie);
+        checkMovieRecord(movieEntity);
         return movie;
     }
 
     @Override
     public Movie updateMovie(Movie movie) throws MovieDontExistException, MovieAlreadyExistsException {
-        checkMovieRecord(movie);
         getMovieWithProducersAndStudios(movie.id());
 
         MovieEntity movieEntity;
@@ -70,8 +71,10 @@ public class MovieServiceImpl implements MovieService {
         } catch (DataIntegrityViolationException ex){
             throw new MovieAlreadyExistsException("You are trying to update a movie to a title and year that already exists");
         }
+        Movie updateMovie = entityToDomainMapper.mapMovieEntityToDomain(movieRepository.save(movieEntity));
+        checkMovieRecord(movieEntity);
 
-        return entityToDomainMapper.mapMovieEntityToDomain(movieRepository.save(movieEntity));
+        return updateMovie;
     }
 
     @Override
@@ -102,10 +105,11 @@ public class MovieServiceImpl implements MovieService {
         return movieEntity.get();
     }
 
-    public void checkMovieRecord(Movie movie){
-        if (movie.winner()){
-            for (Producer producer : movie.producers()) {
-                producerRecordService.saveProducerRecord(ProducerRecordBuilder.createRecord(producer, movie.year()));
+    public void checkMovieRecord(MovieEntity movie){
+        if (movie.isWinner()){
+            for (ProducerEntity producer : movie.getProducers()) {
+                producerService.addAwardToProducer(producer, movie.getReleaseYear());
+//                producerRecordService.saveProducerRecord(ProducerRecordBuilder.createRecord(entityToDomainMapper.mapProducerEntityToDomain(producer), movie.getReleaseYear()));
             }
         }
     }

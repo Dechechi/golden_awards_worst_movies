@@ -6,6 +6,7 @@ import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerRecordEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.StudioEntity;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,10 @@ public class EntityToDomainMapper {
     }
 
     public Producer mapProducerEntityToDomain(ProducerEntity producer){
-        return new Producer(producer.getName());
+        return new Producer(producer.getId(),producer.getName(), Arrays.stream(producer.getAwardYears().split(";"))
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .collect(Collectors.toList()));
     }
 
     public ProducerRecord mapRecordEntityToDomain(ProducerRecordEntity producerRecordEntity){
@@ -38,7 +42,7 @@ public class EntityToDomainMapper {
     }
 
     public ProducerAward mapAwardEntityRecordToDomain(ProducerRecordEntity producerRecordEntity){
-        return new ProducerAward(producerRecordEntity.getProducer().getName(),
+        return new ProducerAward(mapProducerEntityToDomain(producerRecordEntity.getProducer()),
                 producerRecordEntity.getIntervalTime(),
                 producerRecordEntity.getPreviousWin(),
                 producerRecordEntity.getFollowingWin());

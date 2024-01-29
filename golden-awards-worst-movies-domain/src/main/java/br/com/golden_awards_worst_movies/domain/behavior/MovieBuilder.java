@@ -8,6 +8,7 @@ import br.com.golden_awards_worst_movies.domain.model.Studio;
 import br.com.golden_awards_worst_movies.domain.dto.MovieRequest;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class MovieBuilder {
         return new Movie(Integer.parseInt(movieRequest.getYear()),
                 movieRequest.getTitle(),
                 splitStudios(movieRequest.getStudios()),
-                splitProducers(movieRequest.getProducers()),
+                splitProducers(movieRequest.getProducers(), movieRequest.getYear(), movieRequest.getWinner()),
                 WinnerBoolean.valueFrom(movieRequest.getWinner()));
     }
 
@@ -27,7 +28,7 @@ public class MovieBuilder {
                 Integer.parseInt(movieRequest.getYear()),
                 movieRequest.getTitle(),
                 splitStudios(movieRequest.getStudios()),
-                splitProducers(movieRequest.getProducers()),
+                splitProducers(movieRequest.getProducers(), movieRequest.getYear(), movieRequest.getWinner()),
                 WinnerBoolean.valueFrom(movieRequest.getWinner()));
     }
 
@@ -38,11 +39,15 @@ public class MovieBuilder {
                 .map(Studio::new).toList();
     }
 
-    public static List<Producer> splitProducers(String producers){
+    public static List<Producer> splitProducers(String producers, String year, String winner) throws InvalidWinnerOptionException {
+        List<Integer> years = new ArrayList<>();
+        if(WinnerBoolean.valueFrom(winner)){
+            years.add(Integer.parseInt(year));
+        }
         return Arrays.stream(producers.split("\\s*(,|\\band\\b)"))
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
-                .map(Producer::new).toList();
+                .map(s -> new Producer(null, s, years)).toList();
     }
 
 }

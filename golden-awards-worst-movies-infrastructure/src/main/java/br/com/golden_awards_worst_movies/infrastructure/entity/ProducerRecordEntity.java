@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "ProducerRecords")
@@ -19,11 +21,23 @@ public class ProducerRecordEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    @JoinColumn(name = "producer_name")
+    @ManyToOne
+    @JoinColumn(name = "producer_id", referencedColumnName = "id")
     private ProducerEntity producer;
     private int intervalTime;
     private int previousWin;
     private int followingWin;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProducerRecordEntity that = (ProducerRecordEntity) o;
+        return previousWin == that.previousWin && followingWin == that.followingWin && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, previousWin, followingWin);
+    }
 }

@@ -9,5 +9,6 @@ import java.util.Set;
 public interface ProducerService {
 
     Set<ProducerEntity> getExistingAndNewProducersAsEntity(List<Producer> producers);
+    void addAwardToProducer(ProducerEntity producer, int year);
 
 }
