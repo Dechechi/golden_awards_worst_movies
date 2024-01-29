@@ -3,15 +3,14 @@ package br.com.golden_awards_worst_movies.application.service.impl;
 import br.com.golden_awards_worst_movies.application.config.CsvReaderConfig;
 import br.com.golden_awards_worst_movies.application.service.MovieService;
 import br.com.golden_awards_worst_movies.application.service.PipelineDataReader;
-import br.com.golden_awards_worst_movies.domain.behavior.MovieBuilder;
 import br.com.golden_awards_worst_movies.domain.dto.MovieRequest;
 import br.com.golden_awards_worst_movies.domain.exception.InvalidWinnerOptionException;
 import br.com.golden_awards_worst_movies.domain.exception.MovieAlreadyExistsException;
+import br.com.golden_awards_worst_movies.domain.model.Movie;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +55,7 @@ public class PipelineDataReaderImpl implements PipelineDataReader {
                         movieRequest.setStudios(line[2]);
                         movieRequest.setProducers(line[3]);
                         movieRequest.setWinner(line[4]);
-                        movieService.createMovie(MovieBuilder.createMovieFromRequest(movieRequest));
+                        movieService.createMovie(new Movie.Builder().fromRequest(movieRequest).build());
                     }
                 }  catch (IOException | CsvException | MovieAlreadyExistsException | InvalidWinnerOptionException e) {
                     LOG.error(e.getMessage());

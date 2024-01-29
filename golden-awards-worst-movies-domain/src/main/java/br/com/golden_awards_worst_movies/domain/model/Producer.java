@@ -11,15 +11,10 @@ public class Producer {
     public Producer() {
     }
 
-    public Producer(Long id, String name, List<Integer> awardYears) {
-        this.id = id;
-        this.name = name;
-        this.awardYears = awardYears;
-    }
-
-    public Producer(String name, List<Integer> awardYears) {
-        this.name = name;
-        this.awardYears = awardYears;
+    private Producer(Builder builder) {
+        id = builder.id;
+        name = builder.name;
+        awardYears = builder.awardYears;
     }
 
     public Long getId() {
@@ -32,5 +27,37 @@ public class Producer {
 
     public List<Integer> getAwardYears() {
         return awardYears;
+    }
+
+    public static final class Builder {
+        private Long id;
+        private String name;
+        private List<Integer> awardYears;
+
+        public Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long val) {
+            id = val;
+            return this;
+        }
+
+        public Builder withName(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder withAwardYears(List<Integer> val) {
+            awardYears = val;
+            return this;
+        }
+
+        public Producer build() {
+            return new Producer(this);
+        }
     }
 }

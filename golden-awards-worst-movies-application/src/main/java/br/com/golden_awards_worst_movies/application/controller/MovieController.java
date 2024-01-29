@@ -1,7 +1,6 @@
 package br.com.golden_awards_worst_movies.application.controller;
 
 import br.com.golden_awards_worst_movies.application.service.MovieService;
-import br.com.golden_awards_worst_movies.domain.behavior.MovieBuilder;
 import br.com.golden_awards_worst_movies.domain.dto.MovieResponse;
 import br.com.golden_awards_worst_movies.domain.exception.BaseException;
 import br.com.golden_awards_worst_movies.domain.mapper.DomainToResponseMapper;
@@ -32,7 +31,7 @@ public class MovieController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(domainToResponseMapper.mapToMovieResponse(movieService.createMovie(
-                        MovieBuilder.createMovieFromRequest(movieRequest)))
+                       new Movie.Builder().fromRequest(movieRequest).build()))
                 );
     }
 
@@ -57,7 +56,7 @@ public class MovieController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(domainToResponseMapper.mapToMovieResponse(movieService.updateMovie(
-                        MovieBuilder.createMovieFromRequestWithId(movieRequest, id)
+                new Movie.Builder().fromRequestWithId(id,movieRequest).build()
                 )));
     }
 

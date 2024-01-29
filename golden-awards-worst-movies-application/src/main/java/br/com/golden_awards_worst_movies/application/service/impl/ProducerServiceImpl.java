@@ -2,8 +2,8 @@ package br.com.golden_awards_worst_movies.application.service.impl;
 
 import br.com.golden_awards_worst_movies.application.service.ProducerRecordService;
 import br.com.golden_awards_worst_movies.application.service.ProducerService;
-import br.com.golden_awards_worst_movies.domain.behavior.ProducerAwardBuilder;
 import br.com.golden_awards_worst_movies.domain.model.Producer;
+import br.com.golden_awards_worst_movies.domain.model.ProducerAward;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.DomainToEntityMapper;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.EntityToDomainMapper;
@@ -64,7 +64,10 @@ public class ProducerServiceImpl implements ProducerService {
                 int currentYear = producer.getAwardYears().get(i);
                 int nextYear = producer.getAwardYears().get(i+1);
                 int interval = Math.abs(currentYear - nextYear);
-                producerRecordService.saveProducerRecord(ProducerAwardBuilder.createAward(producer, interval, currentYear, nextYear));
+                producerRecordService.saveProducerRecord(ProducerAward.Builder.builder().withProducer(producer)
+                        .withInterval(interval)
+                        .withPreviousWin(currentYear)
+                        .withFollowingWin(nextYear).build());
             }
         }
     }

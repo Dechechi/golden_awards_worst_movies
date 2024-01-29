@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 public class EntityToDomainMapper {
 
     public Movie mapMovieEntityToDomain(MovieEntity movie){
-        return new Movie(movie.getId(),
-                movie.getReleaseYear(),
-                movie.getTitle(),
-                movie.getStudios().stream().map(this::mapStudioEntityToDomain).collect(Collectors.toList()),
-                movie.getProducers().stream().map(this::mapProducerEntityToDomain).collect(Collectors.toList()),
-                movie.isWinner());
+        return new Movie.Builder().withId(movie.getId())
+                .withYear(movie.getReleaseYear())
+                .withTitle(movie.getTitle())
+                .withStudios(movie.getStudios().stream().map(this::mapStudioEntityToDomain).collect(Collectors.toList()))
+                .withProducers(movie.getProducers().stream().map(this::mapProducerEntityToDomain).collect(Collectors.toList()))
+                .withWinner(movie.isWinner()).build();
     }
 
     public List<Movie> mapMovieEntityListToDomainList(List<MovieEntity> movieEntities){
@@ -26,21 +26,23 @@ public class EntityToDomainMapper {
     }
 
     public Studio mapStudioEntityToDomain(StudioEntity studio){
-        return new Studio(studio.getName());
+        return new Studio.Builder().withName(studio.getName()).build();
     }
 
     public Producer mapProducerEntityToDomain(ProducerEntity producer){
-        return new Producer(producer.getId(),producer.getName(), Arrays.stream(producer.getAwardYears().split(";"))
-                .mapToInt(Integer::parseInt)
-                .boxed()
-                .collect(Collectors.toList()));
+        return new Producer.Builder().withId(producer.getId())
+                .withName(producer.getName())
+                .withAwardYears(Arrays.stream(producer.getAwardYears().split(";"))
+                    .mapToInt(Integer::parseInt)
+                    .boxed()
+                    .collect(Collectors.toList())).build();
     }
 
     public ProducerAward mapAwardEntityRecordToDomain(ProducerRecordEntity producerRecordEntity){
-        return new ProducerAward(mapProducerEntityToDomain(producerRecordEntity.getProducer()),
-                producerRecordEntity.getIntervalTime(),
-                producerRecordEntity.getPreviousWin(),
-                producerRecordEntity.getFollowingWin());
+        return new ProducerAward.Builder().withProducer(mapProducerEntityToDomain(producerRecordEntity.getProducer()))
+                .withInterval(producerRecordEntity.getIntervalTime())
+                .withPreviousWin(producerRecordEntity.getPreviousWin())
+                .withFollowingWin(producerRecordEntity.getFollowingWin()).build();
     }
 
 }
