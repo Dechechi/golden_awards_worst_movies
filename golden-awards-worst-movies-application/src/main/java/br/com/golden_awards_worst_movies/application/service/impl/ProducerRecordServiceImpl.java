@@ -6,6 +6,7 @@ import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerRecordEntity;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.DomainToEntityMapper;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.EntityToDomainMapper;
+import br.com.golden_awards_worst_movies.infrastructure.repository.ProducerRecordRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -16,21 +17,20 @@ import java.util.stream.Collectors;
 @Service
 public class ProducerRecordServiceImpl implements ProducerRecordService {
 
-    private ProducerRecordSpringRepository producerRecordSpringRepository;
-    private DomainToEntityMapper domainToEntityMapper;
-    private EntityToDomainMapper entityToDomainMapper;
+    final ProducerRecordRepository producerRecordRepository;
+    final DomainToEntityMapper domainToEntityMapper;
+    final EntityToDomainMapper entityToDomainMapper;
 
-    public ProducerRecordServiceImpl(ProducerRecordSpringRepository producerRecordSpringRepository,
-                                     DomainToEntityMapper domainToEntityMapper,
+    public ProducerRecordServiceImpl(ProducerRecordRepository producerRecordRepository, DomainToEntityMapper domainToEntityMapper,
                                      EntityToDomainMapper entityToDomainMapper) {
-        this.producerRecordSpringRepository = producerRecordSpringRepository;
+        this.producerRecordRepository = producerRecordRepository;
         this.domainToEntityMapper = domainToEntityMapper;
         this.entityToDomainMapper = entityToDomainMapper;
     }
 
     @Override
     public ProducerAward saveProducerRecord(ProducerAward producerAward) {
-        Optional<ProducerRecordEntity> recordEntity = producerRecordSpringRepository.findByFollowingWinAndPreviousWin(
+        Optional<ProducerRecordEntity> recordEntity = producerRecordRepository.findByFollowingWinAndPreviousWin(
                 producerAward.getFollowingWin(), producerAward.getPreviousWin());
 
         if(recordEntity.isPresent()){
@@ -38,26 +38,26 @@ public class ProducerRecordServiceImpl implements ProducerRecordService {
         }
 
         return entityToDomainMapper.mapAwardEntityRecordToDomain(
-                producerRecordSpringRepository.save(domainToEntityMapper.mapAwardDomainToEntity(producerAward))
+                producerRecordRepository.save(domainToEntityMapper.mapAwardDomainToEntity(producerAward))
         );
     }
 
     @Override
     public List<ProducerAward> findMaxProducerAwards() {
-        List<ProducerRecordEntity> maxRecordEntity = producerRecordSpringRepository.findAllWithMaxInterval();
+        List<ProducerRecordEntity> maxRecordEntity = producerRecordRepository.findAllWithMaxInterval();
         return maxRecordEntity.stream().map(
-                record -> entityToDomainMapper.mapAwardEntityRecordToDomain(record)).collect(Collectors.toList());
+                entityToDomainMapper::mapAwardEntityRecordToDomain).collect(Collectors.toList());
     }
 
     @Override
     public List<ProducerAward> findMinProducerAwards() {
-        List<ProducerRecordEntity> maxRecordEntity = producerRecordSpringRepository.findAllWithMinInterval();
+        List<ProducerRecordEntity> maxRecordEntity = producerRecordRepository.findAllWithMinInterval();
         return maxRecordEntity.stream().map(
-                record -> entityToDomainMapper.mapAwardEntityRecordToDomain(record)).collect(Collectors.toList());
+                entityToDomainMapper::mapAwardEntityRecordToDomain).collect(Collectors.toList());
     }
     @Override
     @Transactional
     public void deleteAllByProducer(ProducerEntity producerEntity){
-        producerRecordSpringRepository.deleteAllByProducer(producerEntity);
+        producerRecordRepository.deleteAllByProducer(producerEntity);
     }
 }

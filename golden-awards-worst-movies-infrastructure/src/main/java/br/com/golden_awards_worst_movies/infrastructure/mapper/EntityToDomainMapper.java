@@ -26,16 +26,17 @@ public class EntityToDomainMapper {
     }
 
     public Studio mapStudioEntityToDomain(StudioEntity studio){
-        return new Studio.Builder().withName(studio.getName()).build();
+        return new Studio.Builder().withId(studio.getId()).withName(studio.getName()).build();
     }
 
     public Producer mapProducerEntityToDomain(ProducerEntity producer){
         return new Producer.Builder().withId(producer.getId())
                 .withName(producer.getName())
                 .withAwardYears(Arrays.stream(producer.getAwardYears().split(";"))
-                    .mapToInt(Integer::parseInt)
-                    .boxed()
-                    .collect(Collectors.toList())).build();
+                        .filter(s -> !s.isEmpty())
+                        .mapToInt(Integer::parseInt)
+                        .boxed()
+                        .collect(Collectors.toList())).build();
     }
 
     public ProducerAward mapAwardEntityRecordToDomain(ProducerRecordEntity producerRecordEntity){

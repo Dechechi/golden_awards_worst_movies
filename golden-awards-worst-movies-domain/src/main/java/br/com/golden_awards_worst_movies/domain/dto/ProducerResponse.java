@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,6 +14,5 @@ import java.util.List;
 public class ProducerResponse {
 
     private String name;
-    private List<Integer> awardYears;
 
 }

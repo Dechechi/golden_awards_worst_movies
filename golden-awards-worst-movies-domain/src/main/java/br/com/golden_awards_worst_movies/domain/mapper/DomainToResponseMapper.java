@@ -25,7 +25,6 @@ public class DomainToResponseMapper {
     public ProducerResponse mapProducerResponse(Producer producer){
         ProducerResponse producerResponse = new ProducerResponse();
         producerResponse.setName(producer.getName());
-        producerResponse.setAwardYears(producer.getAwardYears());
         return producerResponse;
     }
 

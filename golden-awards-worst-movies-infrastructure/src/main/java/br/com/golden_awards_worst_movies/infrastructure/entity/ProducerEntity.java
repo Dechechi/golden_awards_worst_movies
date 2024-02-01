@@ -23,9 +23,6 @@ public class ProducerEntity implements Serializable {
     private String name;
     private String awardYears;
 
-    @ManyToMany(mappedBy = "producers")
-    private Set<MovieEntity> movies;
-
     public ProducerEntity(String name) {
         this.name = name;
     }
