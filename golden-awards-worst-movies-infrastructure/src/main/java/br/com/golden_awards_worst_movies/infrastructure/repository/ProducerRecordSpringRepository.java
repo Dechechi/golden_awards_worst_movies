@@ -4,12 +4,11 @@ import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerRecordEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProducerRecordRepository extends JpaRepository<ProducerRecordEntity, Long> {
+public interface ProducerRecordSpringRepository extends JpaRepository<ProducerRecordEntity, Long> {
 
     Optional<ProducerRecordEntity> findByFollowingWinAndPreviousWin(int followingWin, int previousWin);
 

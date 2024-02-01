@@ -11,7 +11,7 @@ import br.com.golden_awards_worst_movies.infrastructure.entity.MovieEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.DomainToEntityMapper;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.EntityToDomainMapper;
-import br.com.golden_awards_worst_movies.infrastructure.repository.MovieRepository;
+import br.com.golden_awards_worst_movies.infrastructure.repository.MovieSpringRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.Optional;
 @Service
 public class MovieServiceImpl implements MovieService {
 
-    MovieRepository movieRepository;
+    MovieSpringRepository movieSpringRepository;
     StudioService studioService;
     ProducerService producerService;
     ProducerRecordService producerRecordService;
@@ -30,13 +30,13 @@ public class MovieServiceImpl implements MovieService {
     EntityToDomainMapper entityToDomainMapper;
 
     @Autowired
-    public MovieServiceImpl(MovieRepository movieRepository,
+    public MovieServiceImpl(MovieSpringRepository movieSpringRepository,
                             DomainToEntityMapper domainToEntityMapper,
                             StudioService studioService,
                             ProducerService producerService,
                             EntityToDomainMapper entityToDomainMapper,
                             ProducerRecordService producerRecordService) {
-        this.movieRepository = movieRepository;
+        this.movieSpringRepository = movieSpringRepository;
         this.domainToEntityMapper = domainToEntityMapper;
         this.studioService = studioService;
         this.producerService = producerService;
@@ -50,7 +50,7 @@ public class MovieServiceImpl implements MovieService {
         movieEntity.setProducers(producerService.getExistingAndNewProducersAsEntity(movie.getProducers()));
         movieEntity.setStudios(studioService.getExistingAndNewStudiosAsEntity(movie.getStudios()));
         try {
-            movieRepository.save(movieEntity);
+            movieSpringRepository.save(movieEntity);
         } catch (DataIntegrityViolationException ex){
             throw new MovieAlreadyExistsException("The movie you are trying to create already exists");
         }
@@ -64,12 +64,12 @@ public class MovieServiceImpl implements MovieService {
 
         MovieEntity movieEntity;
         try{
-            movieEntity = movieRepository.save(domainToEntityMapper.mapMovieDomainToEntity(movie));
+            movieEntity = movieSpringRepository.save(domainToEntityMapper.mapMovieDomainToEntity(movie));
         } catch (DataIntegrityViolationException ex){
             throw new MovieAlreadyExistsException
                     ("You are trying to update a movie to a title and year that already exists");
         }
-        Movie updateMovie = entityToDomainMapper.mapMovieEntityToDomain(movieRepository.save(movieEntity));
+        Movie updateMovie = entityToDomainMapper.mapMovieEntityToDomain(movieSpringRepository.save(movieEntity));
         checkMovieRecord(movieEntity);
 
         return updateMovie;
@@ -77,12 +77,12 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void deleteMovie(Long id) throws MovieDontExistException {
-        movieRepository.delete(domainToEntityMapper.mapMovieDomainToEntity(findMovie(id)));
+        movieSpringRepository.delete(domainToEntityMapper.mapMovieDomainToEntity(findMovie(id)));
     }
 
     @Override
     public List<Movie> findAllMovies() {
-        List<MovieEntity> movieEntities = movieRepository.findAll();
+        List<MovieEntity> movieEntities = movieSpringRepository.findAll();
         return entityToDomainMapper.mapMovieEntityListToDomainList(movieEntities);
     }
 
@@ -94,7 +94,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public MovieEntity getMovieWithProducersAndStudios(Long id) throws MovieDontExistException {
-        Optional<MovieEntity> movieEntity = movieRepository.findById(id);
+        Optional<MovieEntity> movieEntity = movieSpringRepository.findById(id);
 
         if (movieEntity.isEmpty()){
             throw new MovieDontExistException(String.format("Movie with id %d does not exist", id));

@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ProducerRepository extends JpaRepository<ProducerEntity, Long> {
+public interface ProducerSpringRepository extends JpaRepository<ProducerEntity, Long> {
 
     List<ProducerEntity> findByNameIn(@Param("names") List<String> names);
 
