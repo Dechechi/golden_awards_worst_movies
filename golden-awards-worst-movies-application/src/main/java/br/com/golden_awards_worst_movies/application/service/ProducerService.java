@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface ProducerService {
 
-    Set<ProducerEntity> getExistingAndNewProducersAsEntity(List<Producer> producers);
-    void addAwardToProducer(ProducerEntity producer, int year);
+    List<Producer> getExistingAndNewProducers(List<Producer> producers);
+    void addAwardToProducer(Producer producer, int year);
 
 }

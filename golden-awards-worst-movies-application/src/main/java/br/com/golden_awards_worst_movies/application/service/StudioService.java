@@ -8,6 +8,6 @@ import java.util.Set;
 
 public interface StudioService {
 
-    Set<Studio> getExistingAndNewStudiosAsEntity(List<Studio> studios);
+    List<Studio> getExistingAndNewStudios(List<Studio> studios);
 
 }

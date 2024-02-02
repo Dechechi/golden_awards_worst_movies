@@ -20,7 +20,7 @@ public class DomainToEntityMapper {
     public MovieEntity mapMovie(MovieEntity entity, Movie movie){
         entity.setReleaseYear(movie.getYear());
         entity.setTitle(movie.getTitle());
-        entity.setProducers(movie.getProducers().stream().map(this::mapNewProducer).collect(Collectors.toSet()));
+        entity.setProducers(movie.getProducers().stream().map(producer -> mapProducer(new ProducerEntity(), producer)).collect(Collectors.toSet()));
         entity.setStudios(movie.getStudios().stream().map(this::mapNewStudio).collect(Collectors.toSet()));
         entity.setWinner(movie.isWinner());
         return entity;

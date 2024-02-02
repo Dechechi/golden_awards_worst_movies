@@ -7,6 +7,7 @@ import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerAwardEnti
 import br.com.golden_awards_worst_movies.infrastructure.mapper.DomainToEntityMapper;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.EntityToDomainMapper;
 import br.com.golden_awards_worst_movies.infrastructure.repository.ProducerAwardSpringRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +48,7 @@ public class ProducerAwardRepository implements ProducerAwardRepositoryI {
             producerAwardEntity = repository.findById(producerAward.getId()).orElseThrow(RuntimeException::new);
             producerAwardEntity = domainToEntityMapper.mapAward(producerAwardEntity, producerAward);
         }
-        return entityToDomainMapper.mapAwardEntityRecordToDomain(producerAwardEntity);
+        return entityToDomainMapper.mapAwardEntityRecordToDomain(repository.save(producerAwardEntity));
     }
 
     @Override
@@ -63,7 +64,8 @@ public class ProducerAwardRepository implements ProducerAwardRepositoryI {
     }
 
     @Override
+    @Transactional
     public void deleteAllByProducer(Producer producer) {
-        repository.deleteAllByProducer(domainToEntityMapper.mapNewProducer(producer));
+        repository.deleteAllByProducerId(producer.getId());
     }
 }

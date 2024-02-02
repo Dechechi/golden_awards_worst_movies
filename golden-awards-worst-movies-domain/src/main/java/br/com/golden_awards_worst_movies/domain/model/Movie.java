@@ -68,6 +68,16 @@ public class Movie {
             return new Builder();
         }
 
+        public Builder copy(Movie original){
+            this.id = original.getId();
+            this.year = original.getYear();
+            this.title = original.getTitle();
+            this.studios = original.getStudios();
+            this.producers = original.getProducers();
+            this.winner = original.isWinner();
+            return this;
+        }
+
         public Builder withId(Long val) {
             id = val;
             return this;
