@@ -1,7 +1,7 @@
-package br.com.golden_awards_worst_movies.application.service.impl;
+package br.com.golden_awards_worst_movies.domain.service.impl;
 
-import br.com.golden_awards_worst_movies.application.service.ProducerAwardService;
-import br.com.golden_awards_worst_movies.application.service.ProducerService;
+import br.com.golden_awards_worst_movies.domain.service.ProducerAwardService;
+import br.com.golden_awards_worst_movies.domain.service.ProducerService;
 import br.com.golden_awards_worst_movies.domain.model.Producer;
 import br.com.golden_awards_worst_movies.domain.model.ProducerAward;
 import br.com.golden_awards_worst_movies.domain.repository.ProducerRepositoryI;

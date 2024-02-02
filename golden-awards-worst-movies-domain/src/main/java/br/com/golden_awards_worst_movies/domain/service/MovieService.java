@@ -1,4 +1,4 @@
-package br.com.golden_awards_worst_movies.application.service;
+package br.com.golden_awards_worst_movies.domain.service;
 
 import br.com.golden_awards_worst_movies.domain.exception.MovieAlreadyExistsException;
 import br.com.golden_awards_worst_movies.domain.exception.MovieDontExistException;

@@ -1,6 +1,6 @@
 package br.com.golden_awards_worst_movies.application.controller;
 
-import br.com.golden_awards_worst_movies.application.service.MovieService;
+import br.com.golden_awards_worst_movies.domain.service.MovieService;
 import br.com.golden_awards_worst_movies.domain.dto.MovieResponse;
 import br.com.golden_awards_worst_movies.domain.exception.BaseException;
 import br.com.golden_awards_worst_movies.domain.mapper.DomainToResponseMapper;

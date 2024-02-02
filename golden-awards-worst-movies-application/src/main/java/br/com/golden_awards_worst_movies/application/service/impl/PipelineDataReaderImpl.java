@@ -1,7 +1,7 @@
 package br.com.golden_awards_worst_movies.application.service.impl;
 
 import br.com.golden_awards_worst_movies.application.config.CsvReaderConfig;
-import br.com.golden_awards_worst_movies.application.service.MovieService;
+import br.com.golden_awards_worst_movies.domain.service.MovieService;
 import br.com.golden_awards_worst_movies.application.service.PipelineDataReader;
 import br.com.golden_awards_worst_movies.domain.dto.MovieRequest;
 import br.com.golden_awards_worst_movies.domain.exception.InvalidWinnerOptionException;

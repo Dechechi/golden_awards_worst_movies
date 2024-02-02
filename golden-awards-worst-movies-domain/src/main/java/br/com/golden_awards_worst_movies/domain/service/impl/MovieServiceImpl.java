@@ -1,9 +1,8 @@
-package br.com.golden_awards_worst_movies.application.service.impl;
+package br.com.golden_awards_worst_movies.domain.service.impl;
 
-import br.com.golden_awards_worst_movies.application.service.MovieService;
-import br.com.golden_awards_worst_movies.application.service.ProducerAwardService;
-import br.com.golden_awards_worst_movies.application.service.ProducerService;
-import br.com.golden_awards_worst_movies.application.service.StudioService;
+import br.com.golden_awards_worst_movies.domain.service.MovieService;
+import br.com.golden_awards_worst_movies.domain.service.ProducerService;
+import br.com.golden_awards_worst_movies.domain.service.StudioService;
 import br.com.golden_awards_worst_movies.domain.exception.MovieAlreadyExistsException;
 import br.com.golden_awards_worst_movies.domain.exception.MovieDontExistException;
 import br.com.golden_awards_worst_movies.domain.model.Movie;

@@ -1,6 +1,6 @@
-package br.com.golden_awards_worst_movies.application.service.impl;
+package br.com.golden_awards_worst_movies.domain.service.impl;
 
-import br.com.golden_awards_worst_movies.application.service.StudioService;
+import br.com.golden_awards_worst_movies.domain.service.StudioService;
 import br.com.golden_awards_worst_movies.domain.model.Studio;
 import br.com.golden_awards_worst_movies.domain.repository.StudioRepositoryI;
 import org.springframework.beans.factory.annotation.Autowired;

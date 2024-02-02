@@ -1,10 +1,8 @@
-package br.com.golden_awards_worst_movies.application.service;
+package br.com.golden_awards_worst_movies.domain.service;
 
 import br.com.golden_awards_worst_movies.domain.model.Studio;
-import br.com.golden_awards_worst_movies.infrastructure.entity.StudioEntity;
 
 import java.util.List;
-import java.util.Set;
 
 public interface StudioService {
 
