@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface StudioSpringRepository extends JpaRepository<StudioEntity, String> {
+public interface StudioSpringRepository extends JpaRepository<StudioEntity, Long> {
 
     List<StudioEntity> findByNameIn(@Param("names") List<String> names);
 

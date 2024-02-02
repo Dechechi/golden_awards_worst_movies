@@ -7,13 +7,12 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name = "ProducerRecords")
+@Table(name = "ProducerAwards")
 @Data
 @NoArgsConstructor
-public class ProducerRecordEntity implements Serializable {
+public class ProducerAwardEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -2017771806997095144L;
@@ -32,7 +31,7 @@ public class ProducerRecordEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProducerRecordEntity that = (ProducerRecordEntity) o;
+        ProducerAwardEntity that = (ProducerAwardEntity) o;
         return previousWin == that.previousWin && followingWin == that.followingWin && Objects.equals(id, that.id);
     }
 

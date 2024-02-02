@@ -1,5 +1,6 @@
 package br.com.golden_awards_worst_movies.infrastructure.entity;
 
+import br.com.golden_awards_worst_movies.domain.model.Producer;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "Producers")

@@ -41,6 +41,13 @@ public class Producer {
             return new Builder();
         }
 
+        public Builder copy(Producer original) {
+            this.id = original.getId();
+            this.name = original.getName();
+            this.awardYears = original.getAwardYears();
+            return this;
+        }
+
         public Builder withId(Long val) {
             id = val;
             return this;

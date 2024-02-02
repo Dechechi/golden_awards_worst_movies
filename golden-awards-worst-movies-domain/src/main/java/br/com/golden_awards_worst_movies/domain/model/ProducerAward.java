@@ -2,6 +2,7 @@ package br.com.golden_awards_worst_movies.domain.model;
 
 public class ProducerAward {
 
+    private Long id;
     private Producer producer;
     private int interval;
     private int previousWin;
@@ -11,10 +12,15 @@ public class ProducerAward {
     }
 
     private ProducerAward(Builder builder) {
+        id = builder.id;
         producer = builder.producer;
         interval = builder.interval;
         previousWin = builder.previousWin;
         followingWin = builder.followingWin;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Producer getProducer() {
@@ -34,6 +40,7 @@ public class ProducerAward {
     }
 
     public static final class Builder {
+        private Long id;
         private Producer producer;
         private int interval;
         private int previousWin;
@@ -44,6 +51,11 @@ public class ProducerAward {
 
         public static Builder builder() {
             return new Builder();
+        }
+
+        public Builder withId(Long val){
+            id = val;
+            return this;
         }
 
         public Builder withProducer(Producer val) {

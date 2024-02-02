@@ -1,12 +1,14 @@
 package br.com.golden_awards_worst_movies.application.service.impl;
 
 import br.com.golden_awards_worst_movies.application.service.MovieService;
-import br.com.golden_awards_worst_movies.application.service.ProducerRecordService;
+import br.com.golden_awards_worst_movies.application.service.ProducerAwardService;
 import br.com.golden_awards_worst_movies.application.service.ProducerService;
 import br.com.golden_awards_worst_movies.application.service.StudioService;
 import br.com.golden_awards_worst_movies.domain.exception.MovieAlreadyExistsException;
 import br.com.golden_awards_worst_movies.domain.exception.MovieDontExistException;
 import br.com.golden_awards_worst_movies.domain.model.Movie;
+import br.com.golden_awards_worst_movies.domain.model.Producer;
+import br.com.golden_awards_worst_movies.domain.repository.MovieRepositoryI;
 import br.com.golden_awards_worst_movies.infrastructure.entity.MovieEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
 import br.com.golden_awards_worst_movies.infrastructure.mapper.DomainToEntityMapper;
@@ -22,31 +24,33 @@ import java.util.Optional;
 @Service
 public class MovieServiceImpl implements MovieService {
 
-    MovieSpringRepository movieSpringRepository;
-    StudioService studioService;
-    ProducerService producerService;
-    ProducerRecordService producerRecordService;
-    DomainToEntityMapper domainToEntityMapper;
-    EntityToDomainMapper entityToDomainMapper;
+    final MovieSpringRepository movieSpringRepository;
+    final MovieRepositoryI movieRepositoryI;
+    final StudioService studioService;
+    final ProducerService producerService;
+    final ProducerAwardService producerAwardService;
+    final DomainToEntityMapper domainToEntityMapper;
+    final EntityToDomainMapper entityToDomainMapper;
 
     @Autowired
     public MovieServiceImpl(MovieSpringRepository movieSpringRepository,
-                            DomainToEntityMapper domainToEntityMapper,
+                            MovieRepositoryI movieRepositoryI, DomainToEntityMapper domainToEntityMapper,
                             StudioService studioService,
                             ProducerService producerService,
                             EntityToDomainMapper entityToDomainMapper,
-                            ProducerRecordService producerRecordService) {
+                            ProducerAwardService producerAwardService) {
         this.movieSpringRepository = movieSpringRepository;
+        this.movieRepositoryI = movieRepositoryI;
         this.domainToEntityMapper = domainToEntityMapper;
         this.studioService = studioService;
         this.producerService = producerService;
         this.entityToDomainMapper = entityToDomainMapper;
-        this.producerRecordService = producerRecordService;
+        this.producerAwardService = producerAwardService;
     }
 
     @Override
     public Movie createMovie(Movie movie) throws MovieAlreadyExistsException {
-        MovieEntity movieEntity = domainToEntityMapper.mapMovieDomainToEntity(movie);
+        MovieEntity movieEntity = domainToEntityMapper.mapNewMovie(movie);
         movieEntity.setProducers(producerService.getExistingAndNewProducersAsEntity(movie.getProducers()));
         movieEntity.setStudios(studioService.getExistingAndNewStudiosAsEntity(movie.getStudios()));
         try {
@@ -64,7 +68,7 @@ public class MovieServiceImpl implements MovieService {
 
         MovieEntity movieEntity;
         try{
-            movieEntity = movieSpringRepository.save(domainToEntityMapper.mapMovieDomainToEntity(movie));
+            movieEntity = movieSpringRepository.save(domainToEntityMapper.mapNewMovie(movie));
         } catch (DataIntegrityViolationException ex){
             throw new MovieAlreadyExistsException
                     ("You are trying to update a movie to a title and year that already exists");
@@ -77,7 +81,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void deleteMovie(Long id) throws MovieDontExistException {
-        movieSpringRepository.delete(domainToEntityMapper.mapMovieDomainToEntity(findMovie(id)));
+        movieSpringRepository.delete(domainToEntityMapper.mapNewMovie(findMovie(id)));
     }
 
     @Override
@@ -107,6 +111,14 @@ public class MovieServiceImpl implements MovieService {
         if (movie.isWinner()){
             for (ProducerEntity producer : movie.getProducers()) {
                 producerService.addAwardToProducer(producer, movie.getReleaseYear());
+            }
+        }
+    }
+
+    public void checkMovieRecord2(Movie movie){
+        if (movie.isWinner()){
+            for (Producer producer : movie.getProducers()) {
+                producerService.addAwardToProducer(producer, movie.getYear()));
             }
         }
     }

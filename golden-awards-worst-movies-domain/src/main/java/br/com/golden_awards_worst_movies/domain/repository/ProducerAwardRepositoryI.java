@@ -5,7 +5,7 @@ import br.com.golden_awards_worst_movies.domain.model.ProducerAward;
 
 import java.util.List;
 
-public interface ProducerRecordRepositoryI {
+public interface ProducerAwardRepositoryI {
 
     ProducerAward findByFollowingWinAndPreviousWin(int followingWin, int previousWin);
     ProducerAward save(ProducerAward producerAward);

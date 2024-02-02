@@ -35,8 +35,15 @@ public class ProducerRepository implements ProducerRepositoryI {
 
     @Override
     public Producer save(Producer producer) {
-        ProducerEntity producerEntity = repository.save(domainToEntityMapper.mapProducerDomainToEntity(producer));
-        return entityToDomainMapper.mapProducerEntityToDomain(producerEntity);
+        ProducerEntity producerEntity;
+        if(producer.getId() == null){
+            producerEntity = domainToEntityMapper.mapNewProducer(producer);
+        } else {
+            //TODO incluir minha propria exception aqui
+            producerEntity = repository.findById(producer.getId()).orElseThrow(RuntimeException::new);
+            producerEntity = domainToEntityMapper.mapProducer(producerEntity, producer);
+        }
+        return entityToDomainMapper.mapProducerEntityToDomain(repository.save(producerEntity));
     }
 
     @Override

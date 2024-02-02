@@ -3,7 +3,7 @@ package br.com.golden_awards_worst_movies.infrastructure.mapper;
 import br.com.golden_awards_worst_movies.domain.model.*;
 import br.com.golden_awards_worst_movies.infrastructure.entity.MovieEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerEntity;
-import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerRecordEntity;
+import br.com.golden_awards_worst_movies.infrastructure.entity.ProducerAwardEntity;
 import br.com.golden_awards_worst_movies.infrastructure.entity.StudioEntity;
 
 import java.util.Arrays;
@@ -39,11 +39,12 @@ public class EntityToDomainMapper {
                         .collect(Collectors.toList())).build();
     }
 
-    public ProducerAward mapAwardEntityRecordToDomain(ProducerRecordEntity producerRecordEntity){
-        return new ProducerAward.Builder().withProducer(mapProducerEntityToDomain(producerRecordEntity.getProducer()))
-                .withInterval(producerRecordEntity.getIntervalTime())
-                .withPreviousWin(producerRecordEntity.getPreviousWin())
-                .withFollowingWin(producerRecordEntity.getFollowingWin()).build();
+    public ProducerAward mapAwardEntityRecordToDomain(ProducerAwardEntity producerAwardEntity){
+        return new ProducerAward.Builder().withId(producerAwardEntity.getId())
+                .withProducer(mapProducerEntityToDomain(producerAwardEntity.getProducer()))
+                .withInterval(producerAwardEntity.getIntervalTime())
+                .withPreviousWin(producerAwardEntity.getPreviousWin())
+                .withFollowingWin(producerAwardEntity.getFollowingWin()).build();
     }
 
 }
